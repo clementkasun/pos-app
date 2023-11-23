@@ -1,0 +1,31 @@
+/* ReceiptModal.css */
+.receipt-modal {
+  max-width: 400px; /* Adjust the maximum width as needed */
+  text-align: left;
+}
+
+.receipt-modal .ant-modal-header {
+  background-color: #f5f5f5; /* Background color for the modal header */
+  border-bottom: 1px solid #ddd; /* Border at the bottom of the header */
+}
+
+.receipt-modal .ant-modal-title {
+  font-weight: bold;
+  font-size: 18px;
+  color: #333; /* Title text color */
+}
+
+.receipt-modal .ant-modal-body {
+  padding: 16px; /* Padding inside the modal body */
+}
+
+.receipt-modal .ant-modal-footer {
+  border-top: 1px solid #ddd; /* Border at the top of the footer */
+  text-align: center;
+}
+
+.receipt-modal .ant-modal-footer .ant-btn-primary {
+  background-color: #1890ff; /* Background color for the OK button */
+  border-color: #1890ff;
+  color: #fff; /* Text color for the OK button */
+}

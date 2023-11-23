@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Currency from "./Currency";
+import POS from "./Pos";
+import ProductCategory from "./ProductCategory";
+import Product from './Product';
+import Dashboard from "./Dashboard";
+import Receipt from "./Reciept";
 
-function App() {
+const AppRouter = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/currency" element={<Currency />} />
+        <Route path="/pos" element={<POS />} />
+        <Route path="/product-category" element={<ProductCategory />} />
+        <Route path="/products" element={<Product />} />
+        <Route path="/reciept" element={<Receipt />} />
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
-export default App;
+export default AppRouter;

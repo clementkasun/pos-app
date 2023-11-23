@@ -1,0 +1,90 @@
+[
+  {
+    "id": 1,
+    "title": "Pizza",
+    "image": "pizza.jpeg",
+    "category": "Foods",
+    "description": "test",
+    "price": 10
+  },
+  {
+    "id": 2,
+    "title": "Hotdog",
+    "image": "hotdog.png",
+    "category": "Foods",
+    "description": "test",
+    "price": 5
+  },
+  {
+    "id": 3,
+    "title": "Parata",
+    "image": "parata.png",
+    "category": "Foods",
+    "description": "test",
+    "price": 5
+  },
+  {
+    "id": 4,
+    "title": "Parata",
+    "image": "parata.png",
+    "category": "Foods",
+    "description": "test",
+    "price": 5
+  },
+  {
+    "id": 5,
+    "title": "Parata",
+    "image": "parata.png",
+    "category": "Foods",
+    "description": "test",
+    "price": 5
+  },
+  {
+    "id": 6,
+    "title": "Parata",
+    "image": "parata.png",
+    "category": "Foods",
+    "description": "test",
+    "price": 5
+  },
+  {
+    "id": 7,
+    "title": "Parata",
+    "image": "parata.png",
+    "category": "Foods",
+    "description": "test",
+    "price": 5
+  },
+  {
+    "id": 8,
+    "title": "Parata",
+    "image": "parata.png",
+    "category": "Foods",
+    "description": "test",
+    "price": 5
+  },
+  {
+    "id": 9,
+    "title": "Carrot",
+    "image": "carrot.jpg",
+    "category": "vegitables",
+    "description": "test",
+    "price": 5
+  },
+  {
+    "id": 10,
+    "title": "Cocacola",
+    "image": "cocacola.png",
+    "category": "Beverages",
+    "description": "test",
+    "price": 5
+  },
+  {
+    "id": 11,
+    "title": "Scrunchie",
+    "image": "scrunchie.png",
+    "category": "Clothing",
+    "description": "test",
+    "price": 150
+  }
+]
