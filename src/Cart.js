@@ -74,7 +74,7 @@ function Cart({ cart }) {
           <div style={{ display: "flex", alignItems: "center" }}>
             <img
               alt={item.title}
-              src={require(`./storeItems/${item.image}`)}
+              src={item.image}
               style={{ width: "50px", height: "50px", marginRight: "10px" }}
             />
             <p style={{ fontWeight: "bold", textAlign: "left" }}>

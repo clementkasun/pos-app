@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import TemplateLayout from "./Layout.js";
-import { Layout, Row, Col, Button, Input, Table, notification, Select } from "antd";
+import ImgCrop from 'antd-img-crop';
+import { Layout, Row, Col, Button, Input, Table, notification, Select, Image } from "antd";
 import 'tailwindcss/tailwind.css';
 
 const { Content } = Layout;
@@ -20,7 +21,7 @@ const Product = () => {
   const [products, setProducts] = useState([]);
   const [productCategory, setProductCategory] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [productCategories, setProductCategories] = useState([]);
+  const [ProdCategories, setProdCategories] = useState([]);
 
   useEffect(() => {
     fetchProducts();
@@ -29,7 +30,7 @@ const Product = () => {
 
   const fetchProducts = () => {
     setLoading(true);
-    const apiUrl = "http://localhost:5000/api/products";
+    const apiUrl = "https://posbackendservice.clementechs.online/product/getProducts";
 
     fetch(apiUrl)
       .then(response => {
@@ -39,7 +40,7 @@ const Product = () => {
         return response.json();
       })
       .then(data => {
-        setProducts(data);
+        setProducts(data.products);
       })
       .catch(error => {
         console.error("Error fetching products:", error.message);
@@ -50,9 +51,16 @@ const Product = () => {
   };
 
   const fetchProductCategories = () => {
-    const apiUrl = "http://localhost:5000/api/product-categories";
+    const apiUrl = "https://posbackendservice.clementechs.online/productCategory/getAll";
 
-    fetch(apiUrl)
+    const fetchOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    };
+
+    fetch(apiUrl, fetchOptions)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -60,7 +68,8 @@ const Product = () => {
         return response.json();
       })
       .then(data => {
-        setProductCategories(data);
+        // Set the fetched categories in the state
+        setProdCategories(data.productCategories);
       })
       .catch(error => {
         console.error("Error fetching product categories:", error.message);
@@ -76,33 +85,35 @@ const Product = () => {
   };
 
   const handleFileInputChange = (e) => {
-    const selectedFile = e.target.files[0];
+    if (e && e.target && e.target.files) {
+      const selectedFile = e.target.files[0];
 
-    if (selectedFile) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (reader.result.startsWith('data:image/')) {
-          setProductImage(selectedFile);
-        } else {
-          console.error('Invalid file type. Please select an image.');
-        }
-      };
-      reader.readAsDataURL(selectedFile);
+      if (selectedFile) {
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          console.log("FileReader onloadend:", reader.result);
+
+          if (reader.result.startsWith('data:image/')) {
+            setProductImage(selectedFile);
+          } else {
+            console.error('Invalid file type. Please select an image.');
+          }
+        };
+
+        reader.onerror = () => {
+          console.error('Error reading the file. Please try again.');
+        };
+
+        reader.readAsDataURL(selectedFile);
+      }
     }
   };
 
   const createProduct = () => {
-    if (productName && productCode && productPrice && stockNumber && skuNumber && productCategory) {
-      saveProduct({
-        name: productName,
-        code: productCode,
-        image: productImage,
-        description: productDescription,
-        price: productPrice,
-        stock: stockNumber,
-        sku: skuNumber,
-        productCategory: productCategory
-      });
+    if (productName && productCode && productPrice && stockNumber && skuNumber && productCategory && productImage) {
+      setLoading(true);
+      saveProduct(productImage);
       // Reset state variables
       setProductName('');
       setProductCode('');
@@ -116,19 +127,22 @@ const Product = () => {
     }
   };
 
-  const saveProduct = () => {
-    setLoading(true);
-    const apiUrl = "http://localhost:5000/api/save-products";
+  const saveProduct = (file) => {
+    const apiUrl = "https://posbackendservice.clementechs.online/product/create";
+
+    const requestBody = {
+      name: productName,
+      code: productCode,
+      description: productDescription,
+      price: productPrice,
+      sku: skuNumber,
+      stock: stockNumber,
+      productCategory,
+    };
 
     const formData = new FormData();
-    formData.append('productName', productName);
-    formData.append('productCode', productCode);
-    formData.append('productDescription', productDescription);
-    formData.append('productPrice', productPrice);
-    formData.append('skuNumber', skuNumber);
-    formData.append('stockNumber', stockNumber);
-    formData.append('productImage', productImage);
-    formData.append('productCategory', productCategory);
+    formData.append('file', file);
+    formData.append('data', JSON.stringify(requestBody));
 
     const fetchOptions = {
       method: "POST",
@@ -136,29 +150,55 @@ const Product = () => {
     };
 
     fetch(apiUrl, fetchOptions)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
+      .then(response => response.json())
       .then(data => {
-        // Handle the response data
-        console.log("Product saved:", data);
-
-        // Show save notification
+        fetchProducts()
+        // Show delete notification
         notification.success({
-          message: "Product saved",
+          message: "Product has successfully created",
         });
-
-        // Fetch products again after saving to update the list
-        fetchProducts();
       })
       .catch(error => {
-        console.error("Error saving product :", error.message);
+        notification.success({
+          message: "Product creation was failed",
+        });
+      });
+  };
+
+  const deleteProduct = (prodId) => {
+    const apiUrl = `https://posbackendservice.clementechs.online/product/delete`;
+    const prodData = {
+      id: prodId
+    };
+    const fetchOptions = {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(prodData)
+    };
+
+    fetch(apiUrl, fetchOptions)
+      .then(response => {
+        if (response.ok) {
+          // If the response status is OK (2xx), proceed with success actions
+          console.log("Product category deleted successfully");
+
+          // Show delete notification
+          notification.success({
+            message: "Product category deleted",
+          });
+
+          // Fetch categories again after deletion to update the list
+          fetchProducts();
+        } else {
+          // If the response status is not OK, handle the error
+          console.error(`Error deleting product category. Status: ${response.status}`);
+        }
       })
-      .finally(() => {
-        setLoading(false);
+      .catch(error => {
+        // Handle other errors (e.g., network issues)
+        console.error("Error deleting product category:", error.message);
       });
   };
 
@@ -167,6 +207,23 @@ const Product = () => {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
+      render: (text, record, index) => (
+        index + 1
+      ),
+    },
+    {
+      title: 'Image',
+      dataIndex: 'image',
+      key: 'image',
+      render: (text, record, index) => {
+        if (record && record.image) {
+          const imagePath = record.image.replace(/\\/g, '/');
+          console.log('Image Path:', imagePath); // Log the image path to the console for debugging
+          return <Image width={200} src={imagePath} alt={record.name} />;
+        }
+        console.error('Invalid record or image data:', record);
+        return null; // or provide a default image or placeholder
+      },
     },
     {
       title: 'Product Name',
@@ -202,6 +259,16 @@ const Product = () => {
       title: 'Product Category',
       dataIndex: 'productCategory',
       key: 'productCategory',
+    },
+    {
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
+      render: (text, record, index) => (
+        <Button type="danger" onClick={() => deleteProduct(record.key)}>
+          Delete
+        </Button>
+      ),
     },
   ];
 
@@ -265,7 +332,7 @@ const Product = () => {
                         className="mb-4"
                         style={{ width: '100%' }}
                       >
-                        {productCategories.map(category => (
+                        {ProdCategories.map(category => (
                           <Select.Option key={category.id} value={category.id}>
                             {category.name}
                           </Select.Option>
@@ -273,9 +340,10 @@ const Product = () => {
                       </Select>
                     </Col>
                     <Col span={8}>
-                      <input
+                      <Input
                         type="file"
-                        onChange={handleFileInputChange}
+                        onChange={(e) => handleFileInputChange(e)}
+                        placeholder="Product Image"
                         className="mb-4"
                       />
                     </Col>

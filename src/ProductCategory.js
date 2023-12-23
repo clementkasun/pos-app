@@ -11,7 +11,7 @@ Modal.setAppElement('#root');
 const ProductCategory = () => {
   const [categoryName, setCategoryName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [ProdCategories, setProdCategories] = useState([]);
 
   useEffect(() => {
     // Fetch categories when the component mounts
@@ -19,9 +19,16 @@ const ProductCategory = () => {
   }, []);
 
   const fetchCategories = () => {
-    const apiUrl = "http://localhost:5000/api/product-categories";
+    const apiUrl = "https://posbackendservice.clementechs.online/productCategory/getAll";
 
-    fetch(apiUrl)
+    const fetchOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    };
+
+    fetch(apiUrl, fetchOptions)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -30,7 +37,7 @@ const ProductCategory = () => {
       })
       .then(data => {
         // Set the fetched categories in the state
-        setCategories(data);
+        setProdCategories(data.productCategories);
       })
       .catch(error => {
         console.error("Error fetching product categories:", error.message);
@@ -54,7 +61,7 @@ const ProductCategory = () => {
   };
 
   const saveCategory = () => {
-    const apiUrl = "http://localhost:5000/api/product-categories";
+    const apiUrl = "https://posbackendservice.clementechs.online/productCategory/create";
 
     const categoryData = {
       name: categoryName
@@ -93,13 +100,16 @@ const ProductCategory = () => {
   };
 
   const deleteCategory = (categoryId) => {
-    const apiUrl = `http://localhost:5000/api/product-categories/${categoryId}`;
-
+    const apiUrl = `https://posbackendservice.clementechs.online/productCategory/delete`;
+    const categoryData = {
+      id: categoryId
+    };
     const fetchOptions = {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json"
       },
+      body: JSON.stringify(categoryData)
     };
 
     fetch(apiUrl, fetchOptions)
@@ -144,9 +154,9 @@ const ProductCategory = () => {
     },
   ];
 
-  const data = categories.map(category => ({
-    key: category.id,
-    name: category.name,
+  const data = ProdCategories.map(prodCategory => ({
+    key: prodCategory.id,
+    name: prodCategory.name,
   }));
 
   return (
