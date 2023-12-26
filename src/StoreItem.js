@@ -38,6 +38,7 @@ export default function StoreItem({
           objectFit: 'cover',
         }}
       />
+      <span style={{ fontWeight: 'bold'}}>{title}</span>
     </Card>
   );
 }

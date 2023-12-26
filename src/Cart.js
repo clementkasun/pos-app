@@ -64,29 +64,30 @@ function Cart({ cart }) {
 
   return (
     <Card style={{ height: "1000px", borderRadius: 0 }}>
-      <h1>Cart</h1>
-      {cart.map((item, index) => (
-        <Badge.Ribbon
-          text={item.count}
-          color="magenta"
-          style={{ display: "flex", alignItems: "center" }}
-        >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <img
-              alt={item.title}
-              src={item.image}
-              style={{ width: "50px", height: "50px", marginRight: "10px" }}
-            />
-            <p style={{ fontWeight: "bold", textAlign: "left" }}>
-              {item.title}
-            </p>
-          </div>
-          <span>Rs. {item.price}</span>
-        </Badge.Ribbon>
-      ))}
+      <div style={{ width: '100%', height: '700px'}}>
+        {cart.map((item, index) => (
+          <Badge.Ribbon
+            text={item.count}
+            color="magenta"
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <img
+                alt={item.title}
+                src={item.image}
+                style={{ width: "50px", height: "50px", marginRight: "10px" }}
+              />
+              <p style={{ fontWeight: "bold", textAlign: "left" }}>
+                {item.title}
+              </p>
+            </div>
+            <span>Rs. {item.price}</span>
+          </Badge.Ribbon>
+        ))}
+      </div>
 
       {/* Display the total amount */}
-      <div style={{ padding: 16, borderTop: "1px solid #ccc" }}>
+      <div style={{ padding: 16, borderTop: "1px solid #ccc", height: "300px" }}>
         <p><b>Total:</b> ${total.toFixed(2)}</p>
       </div>
 
