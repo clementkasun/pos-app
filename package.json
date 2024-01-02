@@ -1,63 +1,55 @@
 {
-  "name": "pos-app",
-  "version": "0.1.0",
+  "name": "black-dashboard-react",
+  "version": "1.2.2",
   "private": true,
+  "homepage": "https://demos.creative-tim.com/black-dashboard-react/#/admin/dashboard",
   "dependencies": {
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "5.14.14",
-    "@mui/material": "^5.14.14",
-    "@mui/system": "^5.14.14",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^13.0.0",
-    "@testing-library/user-event": "^13.2.1",
-    "antd": "^5.10.1",
-    "antd-img-crop": "^4.18.0",
-    "chart.js": "^4.4.0",
-    "cors": "^2.8.5",
-    "daisyui": "^3.9.4",
-    "express": "^4.18.2",
-    "flow-bin": "^0.219.0",
-    "mdb-react-ui-kit": "^6.3.0",
-    "multer": "^1.4.5-lts.1",
-    "mysql2": "^3.6.4",
-    "path": "^0.12.7",
-    "react": "^18.2.0",
-    "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18.2.0",
+    "@fortawesome/fontawesome-free": "6.4.0",
+    "antd": "^5.12.6",
+    "bootstrap": "4.6.2",
+    "chart.js": "3.9.1",
+    "classnames": "2.3.2",
+    "perfect-scrollbar": "1.5.5",
+    "prop-types": "15.8.1",
+    "react": "18.2.0",
+    "react-chartjs-2": "3.3.0",
+    "react-dom": "18.2.0",
     "react-modal": "^3.16.1",
-    "react-router-dom": "^6.17.0",
+    "react-notification-alert": "0.0.13",
+    "react-router-dom": "6.11.1",
     "react-scripts": "5.0.1",
-    "tailwindcss": "^3.3.5",
-    "web-vitals": "^2.1.0"
+    "sass": "1.62.1"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "build": "react-scripts build && gulp licenses",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "flow": "flow"
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start",
+    "compile-scss": "sass src/assets/scss/black-dashboard-react.scss src/assets/css/black-dashboard-react.css",
+    "minify-scss": "sass src/assets/scss/black-dashboard-react.scss src/assets/css/black-dashboard-react.min.css --style compressed"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": "react-app"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "optionalDependencies": {
+    "eslint-plugin-flowtype": "8.0.3",
+    "reactstrap": "8.10.1"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.31"
+    "typescript": "5.0.4"
+  },
+  "overrides": {
+    "svgo": "3.0.2"
   }
 }
